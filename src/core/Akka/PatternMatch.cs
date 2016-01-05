@@ -91,9 +91,13 @@ namespace Akka
         /// <returns>Case.</returns>
         public Case With<TMessage>(Action<TMessage> action)
         {
-            if (!_handled && _message is TMessage)
+            if (_handled)
+                return;
+
+            TMessage message = _message as TMessage;
+            if (message != null)
             {
-                action((TMessage) _message);
+                action(message);
                 _handled = true;
             }
 
